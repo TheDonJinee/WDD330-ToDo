@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&family=Roboto:wght@300&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+main {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    font-family: 'Roboto', sans-serif;
+    padding: 2em 2em;
+    background-color: #353535;
+    font-size: 1.2rem;
+}
+
+#app {
+    width: 35%;
+    height: 100%;
+    margin: 0 auto;
+    background-color: #f5efff;
+    color: #7400b8;
+    border-radius: 25px;
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    grid-template-rows: repeat(10,1fr);
+}
+
+#header-app {
+    grid-column: 1/6;
+    grid-row: 1/2;
+    text-align: center;
+    padding: .5em;
+    background-color:#7400b8;
+    color: white;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+#main-app {
+    grid-column: 1/6;
+    grid-row: 2/10;
+    padding: 1em 0;
+}
+
+.info {
+    display: flex;
+    justify-content: space-around;
+    background-color: white;
+}
+
+#num-task {
+    padding: .5em;
+}
+
+.info input {
+    padding: .5em;
+    border: none;
+    border-radius: 10px;
+    background-color: #7400b8;
+    color: white;
+    cursor: pointer;
+}
+
+.info input:hover {
+    padding: .5em;
+    border: 1px transparent;
+    border-radius: 10px;
+    background-color: #4d194d;
+    color: white;
+    cursor: pointer;
+}
+
+#footer-app {
+    grid-column: 1/6;
+    grid-row: 9/10;
+    display: flex;
+
+}
+
+#footer-app input {
+    width: 85%;
+    border-radius: 10px;
+    border: 1px solid black;
+    font-size: 1rem;
+}
+
+#footer-app input::placeholder {
+    padding: 10px;
+}
+
+#footer-app button {
+    width: 15%;
+    border-radius: 10px;
+    border: none;
+    background-color: #7400b8;
+    color: white;
+    font-size: 2.5rem;
+    border: 1px solid #7400b8;
+    cursor: pointer;
+}
+
+#footer-app button:hover {
+    background-color: #4d194d;
+    color: white;
+}
+
+.completed label{
+    color: #7180B9; 
+    text-decoration: line-through;
+}
+
+ul {
+    list-style: none;
+    width: 100%;
+    font-size: 1vw;
+    margin-bottom: 20px;
+    padding: 1em;
+}
+
+li {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.delete {
+    width: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.delete:hover {
+    background-color: #7400b8;
+    color: white;
+}
+
+input[type=checkbox] {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 3px;
+    border: 1px solid #2E1760; 
+    flex-shrink: 0;
+    margin-right: 1rem;
+}
+
+@media (max-width: 900px) {
+    #app {
+        width: 80%;
+    }
+}
+
+@media (max-width: 480px) {
+    main {
+        padding: 0;
+    }
+
+    #app {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+        height: 100vh;
+    }
+
+    #footer-app button, #footer-app input, #header-app {
+        border-radius: 0;
+    }
+
+    ul {
+        font-size: 5vw;
+    }
+}
