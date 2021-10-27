@@ -107,7 +107,7 @@ main {
     color: white;
 }
 
-.completed label{
+.completed p{
     color: #7180B9; 
     text-decoration: line-through;
 }

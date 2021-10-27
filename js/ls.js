@@ -20,6 +20,6 @@ export function readFromLS(key) {
  * @param data          value to be saved to LS
  */
 export function writeToLS(key, data) {
-    let text = JSON.stringify(data);        //  prepare our data to be saved to LS. Convert it to text
+    let text = JSON.stringify(data);        // prepare our data to be saved to LS. Convert it to text
     localStorage.setItem(key, text);        // yes this could have all been done in a single line but let's show waht we are doing
 }

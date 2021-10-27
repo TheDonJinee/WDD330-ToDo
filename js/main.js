@@ -1,5 +1,7 @@
 import Todos from './Todos.js';
 
+//  create our Todos object
+//  it knows everything in order to manage a list of todos
 const todo = new Todos('tasks');
 
 /**
