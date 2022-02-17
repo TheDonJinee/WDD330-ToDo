@@ -9,10 +9,10 @@ let todoList = [];      //  initialize the todoList to be an empty array
  */
 export default class Todos {
     constructor(id) {
-        this.element = document.getElementById(id);                 //  save the reference to the UL
-        this.key = id;                                              //  LS key this also matches the UL id
+        this.element = document.getElementById(id);        //  save the reference to the UL
+        this.key = id;                                     //  LS key this also matches the UL id
         this.error = document.getElementById("error");     //  reference to an error div
-        todoList = getToDo(this.key);                               //  get list of todos from LS and empty array if LS is not there
+        todoList = getToDo(this.key);                      //  get list of todos from LS and empty array if LS is not there
     }
 
     /**
@@ -33,27 +33,14 @@ export default class Todos {
      */
     addToDo(){
         this.error.innerHTML = "";                                      //  clear the error message
-        const task = document.getElementById('new-task');      //  get reference to task input field
+        const task = document.getElementById('new-task');               //  get reference to task input field
         if ( task.value === "") {                                       //  if the field is empty
             this.error.innerHTML = "No text entered for task";          //  put a message on the screen
             return;                                                     //  leave
         }
-        saveTodo(task, this.key);                                       //  save this new task to LS
+        saveTodo(task.value, this.key);                                 //  save this new task to LS
+        task.value = '';                                                //  clear the text of the input field
         this.showToDoList();                                            //  render all LIs to the user
-    }
-
-    /**
-     *      addEventListeners
-     *          for each task there are two events we need to track
-     *          child 0 of the LI is the check box to indicate completed or not
-     *          child 2 of the LI is the delete button
-     */
-    addEventListeners() {
-        const ls = Array.from(this.element.children);       //  get an array of the LIs in the UL (the children)
-        ls.forEach(item => {                                //  even if the list is empty the forEach will be fine
-            item.children[0].addEventListener('click', event =>  this.completeToDo(item.id) );
-            item.children[2].addEventListener('click', event =>  this.removeItem(item.id)   );
-        })
     }
 
     /**
@@ -62,10 +49,10 @@ export default class Todos {
      * @param itId          element selected by the user
      */
     completeToDo(itId) {
-        let task = todoList.findIndex(task => task.id == itId);     //  find the desired task using the unique timestamp for this LI
-        todoList[task].completed = !todoList[task].completed;       //  toggle the completed status
-        lsH.writeToLS(this.key, todoList);                          //  update LS
-        markDone(itId);                                             //  change the class for this element to reflect the new status
+        let task = todoList.findIndex(task => task.id === +itId);       //  find the desired task using the unique timestamp for this LI
+        todoList[task].completed = !todoList[task].completed;           //  toggle the completed status
+        lsH.writeToLS(this.key, todoList);                              //  update LS
+        document.getElementById(itId).classList.toggle('completed');    //  change the class for this element to reflect the new status
     }
 
     /**
@@ -75,8 +62,8 @@ export default class Todos {
      * @param itID
      */
     removeItem(itID) {
-        let task = todoList.findIndex(task => task.id == itID);     //  find the matching id
-        todoList.splice(task, 1);                        //  remove from the big list of todos
+        let task = todoList.findIndex(task => task.id === +itID);   //  find the matching id
+        todoList.splice(task, 1);                                   //  remove from the big list of todos
         lsH.writeToLS(this.key, todoList);                          //  save main list of todos to LS
         this.showToDoList();                                        //  show updated list on the page
     }
@@ -94,6 +81,20 @@ export default class Todos {
     }
 
     /**
+     *      addEventListeners
+     *          for each task there are two events we need to track
+     *          child 0 of the LI is the check box to indicate completed or not
+     *          child 2 of the LI is the delete button
+     */
+    addEventListeners() {
+        const ls = Array.from(this.element.children);       //  get an array of the LIs in the UL (the children)
+        ls.forEach(item => {                                //  even if the list is empty the forEach will be fine
+            item.children[0].addEventListener('click', () =>  this.completeToDo(item.id) );
+            item.children[2].addEventListener('click', () =>  this.removeItem(item.id)   );
+        })
+    }
+
+    /**
      *      addTabListeners
      *          scan the page elements for any elements with class containing 'tab'
      *          these are our all, active and completed buttons.
@@ -102,15 +103,25 @@ export default class Todos {
     addTabListeners() {
         const actionButtons = Array.from(document.querySelectorAll('.tab'));
         actionButtons.forEach(tab => {
-            tab.addEventListener('click', event => {
-                for (let btn of actionButtons) {
-                    btn.classList.remove('selected-tab');
-                }
-                event.currentTarget.classList.add('selected-tab');
-                this.filterToDos(event.currentTarget.id);
-            });
+            tab.addEventListener('click', event => this.filterItems(event));
         });
     }
+
+    /**
+     *      filterItems
+     *          react to the button pressed to show all, active or completed items
+     * @param event         contains the currentTarget of the buttone that was pressed
+     */
+    filterItems(event) {
+        const actionButtons = Array.from(document.querySelectorAll('.tab'));
+        for (let btn of actionButtons) {                    //  loop through the action buttons
+            btn.classList.remove('selected-tab');           //  clear the selected status. So none of them have it
+        }
+        //  get the currentTarget and make it the selected button
+        event.currentTarget.classList.add('selected-tab');  //  selected-tab class rule will set the background text of the button
+        this.filterToDos(event.currentTarget.id);           //  The id of the button is 'active', 'competed', or 'all'
+    }
+
 }               //  end of the Todos object
 
 
@@ -152,30 +163,28 @@ function getToDo(key) {
 /**
  *      saveTodo
  *          create a new todo item and save to LS
- * @param task      the reference to our input field
+ * @param value     the reference to our input field
  * @param key       key to our LS item where the todo list will be saved
  */
-function saveTodo(task, key) {
+function saveTodo(value, key) {
     let timestamp = Date.now();     //  this unique value will serve as the id for our todo item
-                    //  we need a unique identifier the timestamp is a fine thing to use
-    const newTodo = {id: timestamp, content: task.value, completed: false};     //  default to NOT completed
+    const newTodo = {id: timestamp, content: value, completed: false};     //  default to NOT completed
     todoList.push(newTodo);         //  save new task item to our big list of todos
     lsH.writeToLS(key,todoList);    //  save our list of all todo items
-    task.value = '';                //  clear the text of the input field
-    task.focus();                   //  for a nice touch keep the focus in the input field
 }
 
 /**
  *      renderToDoList
  *          Give this function a list of todos and the UL to which they should be added
- * @param unorderedList
+ *          It doesn't matter if it is the full list or a filtered list
+ * @param ul
  * @param ls
  */
 function renderToDoList(ul, ls) {
-    ul.innerHTML = '';       //  let's clear out all old to-dos
-                             //  one at a time grab a todo object an put it in our list
+    ul.innerHTML = '';              //  let's clear out all old to-dos
+                                    //  one at a time grab a todo object an put it in our list
     ls.forEach(taskObject => ul.innerHTML += renderOneToDo(taskObject) );
-    updateCount(ls);         //  show the count of the current list
+    updateCount(ls);                //  show the count of the current list
 }
 
 /**
@@ -209,15 +218,5 @@ function renderOneToDo(task) {
  * @param ls
  */
 function updateCount(ls){
-    document.getElementById('num-task').innerHTML =  `${(ls != null) ? ls.length : 0}  tasks left`;
-}
-
-/**
- *  markDone
- *      using the element that was clicked get the parent.
- *      then toggle the completed class so the CSS can render the element correctly
- * @param itId      this is the clicked on text
- */
-function markDone(itId){
-    document.getElementById(itId).classList.toggle('completed');
+    document.getElementById('num-task').innerHTML = `${(ls != null) ? ls.length : 0}  tasks left`;
 }
