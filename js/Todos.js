@@ -69,18 +69,6 @@ export default class Todos {
     }
 
     /**
-     *      filterToDos
-     *          depending on the button pressed filter the list of todos
-     * @param category      the id of the button pressed 'all', 'completed', 'active'
-     */
-    filterToDos(category){
-        category = filterBy(category);          //  category param is the id of the button pushed convert to T/F or NULL
-        const f = todoList.filter(task =>  (category != null) ? task.completed === category : task );
-        renderToDoList(this.element, f);        //  now we have a list todos of the desired type
-        this.addEventListeners();               //  since we wiped out all of the old HTML we need at attach event listeners for the new LIs
-    }
-
-    /**
      *      addEventListeners
      *          for each task there are two events we need to track
      *          child 0 of the LI is the check box to indicate completed or not
@@ -110,7 +98,7 @@ export default class Todos {
     /**
      *      filterItems
      *          react to the button pressed to show all, active or completed items
-     * @param event         contains the currentTarget of the buttone that was pressed
+     * @param event         contains the currentTarget of the button that was pressed
      */
     filterItems(event) {
         const actionButtons = Array.from(document.querySelectorAll('.tab'));
@@ -120,6 +108,18 @@ export default class Todos {
         //  get the currentTarget and make it the selected button
         event.currentTarget.classList.add('selected-tab');  //  selected-tab class rule will set the background text of the button
         this.filterToDos(event.currentTarget.id);           //  The id of the button is 'active', 'competed', or 'all'
+    }
+
+    /**
+     *      filterToDos
+     *          depending on the button pressed filter the list of todos
+     * @param category      the id of the button pressed 'all', 'completed', 'active'
+     */
+    filterToDos(category){
+        category = filterBy(category);          //  category param is the id of the button pushed convert to T/F or NULL
+        const f = todoList.filter(task =>  (category != null) ? task.completed === category : task );
+        renderToDoList(this.element, f);        //  now we have a list todos of the desired type
+        this.addEventListeners();               //  since we wiped out all of the old HTML we need at attach event listeners for the new LIs
     }
 
 }               //  end of the Todos object

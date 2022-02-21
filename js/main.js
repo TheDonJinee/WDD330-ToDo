@@ -12,9 +12,7 @@ const todo = new Todos('tasks');
 window.addEventListener('load', () => {
     todo.showToDoList();
     todo.addTabListeners();
-});
-
 //  when the ADD button is pressed...
-const nTask= document.getElementById('add');
-nTask.addEventListener('click', () =>  todo.addToDo() );
-
+    const nTask= document.getElementById('add');
+    nTask.addEventListener('click', () =>  todo.addToDo() );
+});

@@ -13,13 +13,13 @@ export function readFromLS(key) {
 
 /**
  *      writeToLS
- *          using the key paramters save the specified data to LS
- *          the data will need to first be convereted to text
+ *          using the key parameters save the specified data to LS
+ *          the data will need to first be converted to text
  *          then saved to LS
- * @param key           LS key for the balue yto be saved
+ * @param key           LS key for the value to be saved
  * @param data          value to be saved to LS
  */
 export function writeToLS(key, data) {
     let text = JSON.stringify(data);        // prepare our data to be saved to LS. Convert it to text
-    localStorage.setItem(key, text);        // yes this could have all been done in a single line but let's show waht we are doing
+    localStorage.setItem(key, text);        // yes this could have all been done in a single line but let's show what we are doing
 }

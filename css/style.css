@@ -53,7 +53,7 @@ main {
     padding: .5em;
 }
 
-.info input {
+.tab {
     padding: .5em;
     border: none;
     border-radius: 10px;
@@ -75,7 +75,6 @@ main {
     grid-column: 1/6;
     grid-row: 9/10;
     display: flex;
-
 }
 
 #footer-app input {
@@ -92,7 +91,6 @@ main {
 #footer-app button {
     width: 15%;
     border-radius: 10px;
-    border: none;
     background-color: #7400b8;
     color: white;
     font-size: 2.5rem;
@@ -144,29 +142,6 @@ input[type=checkbox] {
     margin-right: 1rem;
 }
 
-@media (max-width: 900px) {
-    #app {
-        width: 80%;
-    }
-}
-
-@media (max-width: 480px) {
-    main {
-        padding: 0;
-    }
-
-    #app {
-        width: 100%;
-        margin: 0;
-        border-radius: 0;
-        height: 100vh;
-    }
-
-    #footer-app button, #footer-app input, #header-app {
-        border-radius: 0;
-    }
-
-    ul {
-        font-size: 5vw;
-    }
+.selected-tab {
+    background-color: lightblue;
 }
